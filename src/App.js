@@ -2,6 +2,8 @@ import './App.css';
 
 import React, { Component } from 'react';
 import People from './components/People/People';
+import ToggleButton from './components/ToggleButton/ToggleButton';
+import Counter from './components/Counter/Counter';
 
 class App extends Component {
   state = {
@@ -60,17 +62,25 @@ class App extends Component {
     return (
       <div className="App">
         <h1 onClick={this.changeTitle}>{this.state.title}</h1>
-        <button onClick={this.toggle}>Переключить Юзеров</button>
-        {
-          this.state.isShow ?
+
+        <ToggleButton
+          show={this.state.isShow}
+          toggler={this.toggle}
+          count={this.state.people.length}
+        >
+          Переключить пользователей
+        </ToggleButton>
+
+        <Counter units={this.state.people}>Количество людей</Counter>
+
+        {this.state.isShow ? (
           <People
             people={this.state.people}
             increase={this.increaseAge}
             change={this.changeName}
             remove={this.removePerson}
           />
-          : null
-        }
+        ) : null}
       </div>
     );
   }
