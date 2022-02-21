@@ -1,7 +1,7 @@
 import './App.css';
-import Person from './components/Person/Person';
 
 import React, { Component } from 'react';
+import People from './components/People/People';
 
 class App extends Component {
   state = {
@@ -56,36 +56,21 @@ class App extends Component {
   }
 
   render() {
-    let wrapper = null;
-
-    if (this.state.isShow) {
-      wrapper = (
-        <div className="wrapper">
-          {
-            this.state.people.map( (person) => {
-              return (
-                <Person
-                  key={person.id}
-                  name={person.name}
-                  age={person.age}
-                  click={() => this.increaseAge(person.id)}
-                  change={(event) => this.changeName(event, person.id)}
-                  remove={() => this.removePerson(person.id)}
-                >
-                  {person.prof}
-                </Person>
-              );
-            })
-          }
-        </div>
-      );
-    }
 
     return (
       <div className="App">
         <h1 onClick={this.changeTitle}>{this.state.title}</h1>
         <button onClick={this.toggle}>Переключить Юзеров</button>
-        {wrapper}
+        {
+          this.state.isShow ?
+          <People
+            people={this.state.people}
+            increase={this.increaseAge}
+            change={this.changeName}
+            remove={this.removePerson}
+          />
+          : null
+        }
       </div>
     );
   }
