@@ -2,10 +2,10 @@
   text-align: center;
 }
 
-.wrapper {
+.blocks-container {
   margin: 1rem auto;
-  max-width: 1200px;
+  max-width: 300px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(6,1fr);
+  cursor: pointer;
 }
