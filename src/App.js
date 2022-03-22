@@ -12,6 +12,7 @@ import fields from './img/fields.jpg'
 import mount from './img/inMount.jpg'
 import desert from './img/desert.jpg'
 import ExpInfo from './components/ExpInfo/ExpInfo';
+import GameSaver from './components/GameSaver/GameSaver';
 
 const mapImg = [
   fields,
@@ -40,45 +41,36 @@ class App extends Component {
     this.setState({ start: false })
   }
   chooseMap = (number) => {
-      if (number === 1) {
-        return this.setState({ map: { mapSize: 40, food: 40, disease: 50, death: 60, show: true } })
-      }
-      if (number === 2) {
-        return this.setState({ map: { mapSize: 30, food: 50, disease: 60, death: 70, show: true } })
-      }
-      if (number === 3) {
-        return this.setState({ map: { mapSize: 30, food: 50, disease: 60, death: 70, show: true } })
-      }
-      if (number === 4) {
-        return this.setState({ map: { mapSize: 70, food: 20, disease: 30, death: 40, show: true } })
-      }
+    if (number === 1) {
+      return this.setState({ map: { mapSize: 40, food: 40, disease: 50, death: 60, show: true } })
+    }
+    if (number === 2) {
+      return this.setState({ map: { mapSize: 30, food: 50, disease: 60, death: 70, show: true } })
+    }
+    if (number === 3) {
+      return this.setState({ map: { mapSize: 30, food: 50, disease: 60, death: 70, show: true } })
+    }
+    if (number === 4) {
+      return this.setState({ map: { mapSize: 70, food: 20, disease: 30, death: 40, show: true } })
+    }
   }
+
   randMap = () => {
     let randMaps = [];
     let randNum
-    loop1:
     while (randMaps.length !== 2) {
-      randNum = Math.floor(Math.random() * 4)
-      for (let i = 0; i < randMaps.length; i++) {
-        if (randMaps[i].number === randNum) {
-          continue loop1;
-        } 
+      randNum = Math.floor(Math.random() * 4 + 1);
+
+      if (randMaps[0] && (randMaps[0].number === randNum)) {
+        continue;
       }
-      if (randNum === 0) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 1, id: uuidv1() })
-      }
-      if (randNum === 1) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 2, id: uuidv1() })
-      }
-      if (randNum === 2) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 3, id: uuidv1() })
-      }
-      if (randNum === 3) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 4, id: uuidv1() })
-      }
+
+      randMaps.push({ mapImg: mapImg[randNum - 1], number: randNum, id: uuidv1() });
+
     }
     this.setState({ randMaps })
   }
+
   componentDidMount() {
     this.randMap()
   }
@@ -124,6 +116,7 @@ class App extends Component {
     this.getExodus(id)
     this.setState({ items })
   };
+
   getExodus = (id) => {
     if (this.state.items.filter(item => {
       return item.show
@@ -164,11 +157,17 @@ class App extends Component {
       }
     })
   }
+
   getExpInfo = () => {
     return ({ people: 'Из людей в количестве ' + this.state.allPeople + ' человек, вернулись ' + this.state.people + ' человек.' })
   }
   stopExpedition = (expInfo) => {
     return this.setState({ exodus: 'Экспедиция завершена', expInfo })
+  }
+
+  loadGame = (save) =>
+  {
+    this.setState({population: save.population, food:save.food, expInfo: save.expInfo, randMaps: save.randMaps})
   }
   render() {
     let blocks = (
@@ -215,6 +214,17 @@ class App extends Component {
           }
         </div>
       )
+    let gameSaver =
+      (
+        <GameSaver
+          population={this.state.population}
+          food={this.state.food}
+          expInfo={this.state.expInfo}
+          randMaps={this.state.randMaps}
+          treats={this.state.treats}
+          loadGame={this.loadGame}
+        />
+      )
     let expInfo =
       (
         <div className="exp-info">
@@ -238,6 +248,7 @@ class App extends Component {
     } else {
       return (
         <div className="App">
+          {gameSaver}
           {gameBegining}
           <h1>Выберите локацию:</h1>
           {chooseMap}
