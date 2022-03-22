@@ -56,26 +56,15 @@ class App extends Component {
   randMap = () => {
     let randMaps = [];
     let randNum
-    loop1:
     while (randMaps.length !== 2) {
-      randNum = Math.floor(Math.random() * 4)
-      for (let i = 0; i < randMaps.length; i++) {
-        if (randMaps[i].number === randNum) {
-          continue loop1;
-        } 
+      randNum = Math.floor(Math.random() * 4 + 1);
+
+      if (randMaps[0] && (randMaps[0].number === randNum)) {
+        continue;
       }
-      if (randNum === 0) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 1, id: uuidv1() })
-      }
-      if (randNum === 1) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 2, id: uuidv1() })
-      }
-      if (randNum === 2) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 3, id: uuidv1() })
-      }
-      if (randNum === 3) {
-        randMaps.push({ mapImg: mapImg[randNum], number: 4, id: uuidv1() })
-      }
+
+      randMaps.push({ mapImg: mapImg[ randNum - 1 ], number: randNum, id: uuidv1() });
+
     }
     this.setState({ randMaps })
   }
