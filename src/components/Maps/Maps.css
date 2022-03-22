@@ -1,0 +1,12 @@
+.maps-container
+{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+.map-img
+{
+    margin-left: 10px;
+    width: 200px;
+    height: 200px;
+}
